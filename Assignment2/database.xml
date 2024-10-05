@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<database>
+    <author>
+        <email>fowler@acm.org</email>
+        <id>mfowler</id>
+        <name>Martin Fowler</name>
+        <publication>DSL2010</publication>
+        <publication>Cool123</publication>
+    </author>
+    <author>
+        <email>kent@beck.com</email>
+        <id>kbeck</id>
+        <name>Kent Beck</name>
+        <publication>Cool123</publication>
+    </author>
+    <author>
+        <email>martin@robert.com</email>
+        <id>mrobert</id>
+        <name>Martin C. Robert</name>
+    </author>
+    <publication type="phdthesis" yearPublished="2010">
+        <author>mfowler</author>
+        <id>DSL2010</id>
+        <title>Domain-Specific Languages</title>
+    </publication>
+    <publication type="book" yearPublished="2009">
+        <author>kbeck</author>
+        <author>mfowler</author>
+        <id>Cool123</id>
+        <title>Really cool title</title>
+    </publication>
+</database>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="database" type="database"/>
+
+  <xs:complexType name="database">
+    <xs:sequence>
+      <xs:element name="author" type="author" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="publication" type="publication" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="author">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string"/>
+      <xs:element name="id" type="xs:ID"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="publication" type="xs:IDREF" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="publication">
+    <xs:sequence>
+      <xs:element name="author" type="xs:IDREF" maxOccurs="unbounded"/>
+      <xs:element name="id" type="xs:ID"/>
+      <xs:element name="title" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="type" type="publicationType" use="required"/>
+    <xs:attribute name="yearPublished" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="publicationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="article"/>
+      <xs:enumeration value="techreport"/>
+      <xs:enumeration value="book"/>
+      <xs:enumeration value="masterthesis"/>
+      <xs:enumeration value="phdthesis"/>
+      <xs:enumeration value="inproceedings"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

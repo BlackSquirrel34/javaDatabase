@@ -1,0 +1,94 @@
+plugins {
+	id 'java'
+	id 'application'
+	id 'idea'
+}
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	jaxbtools
+}
+
+dependencies {
+	implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.0'
+	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.0'
+
+	jaxbtools group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '4.0.0'
+	jaxbtools group: 'jakarta.activation', name: 'jakarta.activation-api', version: '2.1.2'
+	jaxbtools group: 'com.sun.xml.bind', name: 'jaxb-xjc', version: '4.0.0'
+	jaxbtools group: 'com.sun.xml.bind', name: 'jaxb-jxc', version: '4.0.0'
+	jaxbtools group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '4.0.0'
+	jaxbtools group: 'com.sun.xml.bind', name: 'jaxb-core', version: '4.0.0'
+
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
+	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.1'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+run {
+	standardInput = System.in
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java']
+		}
+		resources {
+			srcDirs = ['src/main/resources']
+		}
+	}
+	test {
+		java {
+			srcDirs = ['src/test/java']
+		}
+		resources {
+			srcDirs = ['src/test/resources']
+		}
+	}
+}
+
+def srcDir = file("src/main/java/de/uniba/wiai/dsg/ajp/assignment2/literature")
+def schemaDir = file("$buildDir/schema")
+
+tasks.register('generateSchema') {
+	group = "jaxbtools"
+	description = "Generate a XSD schema from annotated Java classes"
+	dependsOn 'compileJava'
+	doLast {
+		ant.taskdef(name: 'schemagen', classname: 'com.sun.tools.jxc.SchemaGenTask', classpath: configurations.jaxbtools.asPath)
+		schemaDir.mkdirs()
+		ant.schemagen(
+				srcdir: srcDir,
+				destdir: schemaDir,
+				classpath: configurations.jaxbtools.asPath + ";./build/classes/java/main",
+				includes: "logic/model/Database.java",
+				includeAntRuntime: false,
+				debug: true,
+				verbose: true)
+	}
+}
+
+def generatedClassesDir = file("$buildDir/sources-generated-from-schema")
+
+tasks.register('generateClasses') {
+	group = "jaxbtools"
+	description = "Generate Java classes from a XSD schema"
+	doLast {
+		ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxbtools.asPath)
+		generatedClassesDir.mkdirs()
+		ant.xjc(
+				destdir: generatedClassesDir,
+				schema: 'build/schema/schema.xsd'
+		)
+	}
+}
+
+// Define the main class for the application
+mainClassName = 'de.uniba.wiai.dsg.ajp.assignment2.literature.Main'
