@@ -34,7 +34,7 @@ Code lines given/ added per class:
 
 #### Given Code:  763
 
-- 10 (main class)
++ 10 (main class)
 + 247 (ConsoleHelper)
 + 100 (DatabaseService Specification in comments: required to not be changed)
 + 28 (LiteratureDatabaseException)
@@ -49,7 +49,7 @@ Code lines given/ added per class:
 
 #### Final Code: 2250
 
-18 (main class) (added: 3)
++ 18 (main class) (added: 3)
 + 250 (ConsoleHelper) (added: 3)
 + 100 (DatabaseService Spec. in comments: required to not be changed. Added: 0)
 + 28 (LiteratureDatabaseException) (added: 0)
